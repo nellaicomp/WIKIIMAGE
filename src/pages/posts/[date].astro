@@ -1,0 +1,48 @@
+---
+import BlogPost from '../../layouts/BlogPost.astro';
+import { format } from 'date-fns';
+import fs from 'fs/promises';
+import path from 'path';
+
+export async function getStaticPaths() {
+  const startDate = new Date('2025-01-01');
+  const endDate = new Date('2025-12-31');
+  const dates = [];
+  
+  let currentDate = startDate;
+  while (currentDate <= endDate) {
+    dates.push(format(currentDate, 'yyyy-MM-dd'));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  
+  return dates.map(date => ({
+    params: { date },
+    props: { date }
+  }));
+}
+
+const { date } = Astro.props;
+
+// Try to load the POTD data from our local storage
+let postData;
+try {
+  const dataPath = path.join(process.cwd(), 'src/data/potd', `${date}.json`);
+  const rawData = await fs.readFile(dataPath, 'utf-8');
+  postData = JSON.parse(rawData);
+} catch (error) {
+  // If data doesn't exist, use placeholder
+  postData = {
+    title: `Wikipedia Picture of the Day - ${date}`,
+    pubDate: date,
+    description: `Picture of the Day data for ${date} will be available soon.`,
+    image: '/images/placeholder.jpg',
+    imageDescription: 'Coming soon'
+  };
+}
+
+// Add SEO-friendly title and description
+postData.title = `Wikipedia Picture of the Day for ${format(new Date(date), 'MMMM d, yyyy')} | ExplorerFrame.com`;
+postData.description = `Explore the Wikipedia Picture of the Day for ${format(new Date(date), 'MMMM d, yyyy')} at ExplorerFrame.com. Daily curated images from Wikipedia.`;
+---
+
+<BlogPost frontmatter={postData} />

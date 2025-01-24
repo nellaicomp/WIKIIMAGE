@@ -1,0 +1,88 @@
+---
+import { format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
+
+const { currentDate } = Astro.props;
+const date = new Date(currentDate);
+const monthStart = startOfMonth(date);
+const monthEnd = endOfMonth(date);
+const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
+---
+
+<div class="calendar">
+  <h2>{format(date, 'MMMM yyyy')}</h2>
+  <div class="calendar-grid">
+    <div class="weekday">Sun</div>
+    <div class="weekday">Mon</div>
+    <div class="weekday">Tue</div>
+    <div class="weekday">Wed</div>
+    <div class="weekday">Thu</div>
+    <div class="weekday">Fri</div>
+    <div class="weekday">Sat</div>
+    
+    {days.map(day => {
+      const dateString = format(day, 'yyyy-MM-dd');
+      const isCurrentDay = format(day, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd');
+      return (
+        <a 
+          href={`/posts/${dateString}`}
+          class:list={[
+            'day',
+            { 'current-day': isCurrentDay }
+          ]}
+        >
+          {format(day, 'd')}
+        </a>
+      );
+    })}
+  </div>
+</div>
+
+<style>
+  .calendar {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  
+  .weekday {
+    text-align: center;
+    font-weight: bold;
+    color: #666;
+    font-size: 0.8rem;
+    padding: 0.5rem 0;
+  }
+  
+  .day {
+    text-align: center;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: #333;
+    border-radius: 4px;
+    
+    &:hover {
+      background: #f0f0f0;
+    }
+  }
+  
+  .current-day {
+    background: #4a9eff;
+    color: white;
+    
+    &:hover {
+      background: #3182ce;
+    }
+  }
+</style>

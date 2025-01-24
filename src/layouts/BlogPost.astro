@@ -1,0 +1,96 @@
+---
+import Layout from './Layout.astro';
+import Calendar from '../components/Calendar.astro';
+import { format } from 'date-fns';
+
+const { frontmatter } = Astro.props;
+const { title, description, pubDate, image, imageDescription } = frontmatter;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title,
+  "image": `https://explorerframe.com${image}`,
+  "datePublished": pubDate,
+  "description": description,
+  "articleBody": imageDescription,
+  "publisher": {
+    "@type": "Organization",
+    "name": "ExplorerFrame.com",
+    "url": "https://explorerframe.com"
+  }
+};
+---
+
+<Layout title={title}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  
+  <div class="blog-container">
+    <main class="content">
+      <article>
+        <h1>{title}</h1>
+        <time datetime={pubDate}>{format(new Date(pubDate), 'MMMM d, yyyy')}</time>
+        
+        <img 
+          src={image} 
+          alt={imageDescription}
+          class="featured-image"
+          loading="lazy"
+        />
+        
+        <div class="description">
+          {imageDescription}
+        </div>
+      </article>
+    </main>
+    
+    <aside class="sidebar">
+      <Calendar currentDate={pubDate} />
+    </aside>
+  </div>
+</Layout>
+
+<style>
+  .blog-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .featured-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  
+  .description {
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  time {
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  h1 {
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .sidebar {
+    position: sticky;
+    top: 2rem;
+  }
+</style>

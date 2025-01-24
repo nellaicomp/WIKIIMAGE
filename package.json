@@ -1,0 +1,22 @@
+{
+  "name": "@example/basics",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "fetch-potd": "node scripts/fetch-potd.js"
+  },
+  "dependencies": {
+    "astro": "^4.15.3",
+    "@astrojs/rss": "^4.0.5",
+    "date-fns": "^3.3.1",
+    "schema-dts": "^1.1.2",
+    "node-fetch": "^3.3.2",
+    "sharp": "^0.33.2"
+  }
+}

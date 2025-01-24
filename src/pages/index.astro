@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { format } from 'date-fns';
+
+// Redirect to today's post
+const today = format(new Date(), 'yyyy-MM-dd');
+---
+
+<meta http-equiv="refresh" content={`0;url=/posts/${today}`} />
+
+<Layout title="Wikipedia Picture of the Day">
+  <p>Redirecting to today's picture...</p>
+</Layout>
