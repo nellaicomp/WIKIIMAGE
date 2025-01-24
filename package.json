@@ -14,7 +14,7 @@
   "dependencies": {
     "astro": "^4.15.3",
     "@astrojs/rss": "^4.0.5",
-    "date-fns": "^3.3.1",
+    "date-fns": "^4.1.0",
     "schema-dts": "^1.1.2",
     "node-fetch": "^3.3.2",
     "sharp": "^0.33.2"
