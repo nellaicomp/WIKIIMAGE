@@ -12,7 +12,7 @@
     "fetch-potd": "node scripts/fetch-potd.js"
   },
   "dependencies": {
-    "astro": "^4.15.3",
+    "astro": "^5.5.4",
     "@astrojs/rss": "^4.0.5",
     "date-fns": "^3.3.1",
     "schema-dts": "^1.1.2",
